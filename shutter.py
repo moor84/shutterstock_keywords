@@ -1,30 +1,31 @@
 import sys
 import re
+import tkMessageBox as mbox
+import urllib2
+from Tkinter import Tk, Text, TOP, BOTH, X, N, LEFT, END, INSERT
+from ttk import Frame, Label, Entry
 if sys.version_info < (3, 0):
     # Python 2
     import Tkinter as tk
 else:
     # Python 3
     import tkinter as tk
-import tkMessageBox as mbox
-from Tkinter import Tk, Text, TOP, BOTH, X, N, LEFT, END, INSERT
-from ttk import Frame, Label, Entry
-import urllib2
+
 
 def get_page_text(url):
     response = urllib2.urlopen(url)
     html = response.read()
     return html
 
+
 def get_keywords(url):
     html = get_page_text(url)
     regex = r"<a[^>]*data-track=\"click.assetDetails.keywordSelected-[^>]*>([a-zA-Z0-9]+)<"
     keywords = []
     for match in re.findall(regex, html):
-        k = match
-        keywords.append(k)
-        #print k
+        keywords.append(match)
     return keywords
+
 
 def init_ui(root):
     root.geometry("500x500+500+500")
@@ -51,7 +52,6 @@ def init_ui(root):
     txt.pack(fill=BOTH, pady=5, padx=5, expand=True)
 
     def on_click():
-        #url = "https://www.shutterstock.com/image-vector/vector-decorative-abstract-trendy-colorful-flat-498439864?src=XHddMx99oULXOAjISl-lHA-1-2"
         url = entry1.get()
         print url
 
@@ -59,10 +59,8 @@ def init_ui(root):
         res = ", ".join(keywords)
         print res
         
-        txt.delete("1.0",END)
-        txt.insert("1.0",res)
-
-        #mbox.showinfo("Hi Marinochka", res)
+        txt.delete("1.0", END)
+        txt.insert("1.0", res)
 
     def on_click2():
         entry1.delete(0,END)
@@ -77,4 +75,3 @@ root = tk.Tk()
 root.title("Shutterstock keywords")
 init_ui(root)
 tk.mainloop()
-
